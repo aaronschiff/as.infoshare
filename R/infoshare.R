@@ -1,32 +1,53 @@
 # Automatically download data from Stats NZ's Infoshare website
 
-# Requires RSelenium and Google Chrome to be installed
+# Requires RSelenium to be installed
 
-#' Download one or more data series from Infoshare
+#' Start Selenium server connection
 #'
-#' @param series_ids A character vector of Stats NZ series IDs
-#' @param target_directory The directory downloaded CSV files will be saved
-#' @param browser_dl_directory The directory where downloaded files by the browser are saved
 #' @param selenium_port The port number to use for the connection to Selenium server (default 4567L)
 #' @param selenium_browser The browser for Selenium to use (default Google Chroms)
 #' @param selenium_verbose Should Selenium operate in verbose mode? (default FALSE)
 #' @param ... Other parameters passed to RSelenium::rsDriver() to set up the Selenium connection
 #'
-#' @return TRUE if data was successfully downloaded, otherwise FALSE
+#' @return A connection to the Selenium server
 #' @export
-download_infoshare <- function(series_ids,
-                               target_directory,
-                               browser_dl_directory = "~/Downloads",
-                               selenium_port = 4567L,
-                               selenium_browser = "chrome",
-                               selenium_verbose = FALSE,
-                               ...) {
+start_selenium <- function(selenium_port = 4567L,
+                           selenium_browser = "chrome",
+                           selenium_verbose = FALSE,
+                           ...) {
   # Set up connection to Selenium server
   selenium_driver <- RSelenium::rsDriver(port = selenium_port,
                                          browser = selenium_browser,
                                          verbose = selenium_verbose,
                                          ...)
-  selenium_client <- selenium_driver$client
+  return(selenium_driver)
+}
+
+#' Stop Selenium server
+#'
+#' @param selenium_connection A connection to a Selenium server created by start_selenium()
+#'
+#' @return Nothing
+#' @export
+stop_selenium <- function(selenium_connection) {
+  selenium_connection$server$stop()
+}
+
+#' Download one or more data series from Infoshare
+#'
+#' @param selenium_connection A connection to a Selenium server created by start_selenium()
+#' @param series_ids A character vector of Stats NZ series IDs
+#' @param target_directory The directory downloaded CSV files will be saved
+#' @param browser_dl_directory The directory where downloaded files by the browser are saved
+#'
+#' @return TRUE if data was successfully downloaded, otherwise FALSE
+#' @export
+download_infoshare <- function(selenium_connection,
+                               series_ids,
+                               target_directory,
+                               browser_dl_directory = "~/Downloads") {
+
+  selenium_client <- selenium_connection$client
 
   # Save temporary .sch file with series IDs
   sch <- tibble::tibble(id = series_ids)
@@ -59,9 +80,6 @@ download_infoshare <- function(series_ids,
     Sys.sleep(1)
     dl_timeout <- dl_timeout + 1
   }
-
-  # Stop Selenium server
-  selenium_driver$server$stop()
 
   # Set exit status if download successful
   status <- file.exists(dl_file)

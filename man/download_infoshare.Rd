@@ -5,29 +5,20 @@
 \title{Download one or more data series from Infoshare}
 \usage{
 download_infoshare(
+  selenium_connection,
   series_ids,
   target_directory,
-  browser_dl_directory = "~/Downloads",
-  selenium_port = 4567L,
-  selenium_browser = "chrome",
-  selenium_verbose = FALSE,
-  ...
+  browser_dl_directory = "~/Downloads"
 )
 }
 \arguments{
+\item{selenium_connection}{A connection to a Selenium server created by start_selenium()}
+
 \item{series_ids}{A character vector of Stats NZ series IDs}
 
 \item{target_directory}{The directory downloaded CSV files will be saved}
 
 \item{browser_dl_directory}{The directory where downloaded files by the browser are saved}
-
-\item{selenium_port}{The port number to use for the connection to Selenium server (default 4567L)}
-
-\item{selenium_browser}{The browser for Selenium to use (default Google Chroms)}
-
-\item{selenium_verbose}{Should Selenium operate in verbose mode? (default FALSE)}
-
-\item{...}{Other parameters passed to RSelenium::rsDriver() to set up the Selenium connection}
 }
 \value{
 TRUE if data was successfully downloaded, otherwise FALSE
