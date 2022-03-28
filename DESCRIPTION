@@ -1,0 +1,12 @@
+Package: as.infoshare
+Type: Package
+Title: Automated Downloads from Infoshare
+Version: 0.1.0
+Author: Aaron Schiff
+Maintainer: Aaron Schiff <aaron@schiff.nz>
+Description: A simple interface to automatically download data series from the Stats NZ Infoshare website using RSelenium.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports: RSelenium
+RoxygenNote: 7.1.2
