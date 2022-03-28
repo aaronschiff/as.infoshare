@@ -10,3 +10,5 @@ Encoding: UTF-8
 LazyData: true
 Imports: RSelenium
 RoxygenNote: 7.1.2
+URL: https://github.com/aaronschiff/as.infoshare
+BugReports: https://github.com/aaronschiff/as.infoshare/issues
