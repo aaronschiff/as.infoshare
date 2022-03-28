@@ -63,6 +63,9 @@ download_infoshare <- function(series_ids,
   # Stop Selenium server
   selenium_driver$server$stop()
 
+  # Set exit status if download successful
+  status <- file.exists(dl_file)
+
   # Rename and move downloaded file if it exists
   if (file.exists(dl_file)) {
     file.copy(from = dl_file,
@@ -78,8 +81,6 @@ download_infoshare <- function(series_ids,
   # Remove temporary .sch file
   file.remove(sch_file)
 
-  # Set exit status if download successful
-  status <- file.exists(dl_file)
   return(status)
 }
 
