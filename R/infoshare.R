@@ -47,6 +47,10 @@ download_infoshare <- function(selenium_connection,
                                target_directory,
                                browser_dl_directory = "~/Downloads") {
 
+  if (length(series_ids) > 100) {
+    stop("Infoshare only allows up to 100 series IDs to be retrieved at one time. Please try again with fewer series IDs")
+  }
+
   selenium_client <- selenium_connection$client
 
   # Save temporary .sch file with series IDs
