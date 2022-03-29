@@ -58,7 +58,16 @@ download_infoshare <- function(selenium_connection,
 
   # Remove any previous ExportDirect download file
   dl_file <- paste0(browser_dl_directory, "/ExportDirect.csv")
-  if (file.exists(dl_file)) { file.remove(dl_file) }
+  if (file.exists(dl_file)) {
+    delete_confirm <- readline(prompt = paste0("ExportDirect.csv file already exists in ",
+                                               browser_dl_directory,
+                                               ", ok to delete it? (y/n) "))
+    if (tolower(delete_confirm) == "y") {
+      file.remove(dl_file)
+    } else {
+      stop("Stopping - please remove the file and try again")
+    }
+  }
 
   # Manipulate Export Direct page
   selenium_client$navigate("https://infoshare.stats.govt.nz/infoshare/exportdirect.aspx")
