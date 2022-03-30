@@ -38,6 +38,7 @@ stop_selenium <- function(selenium_connection) {
 #' @param selenium_connection A connection to a Selenium server created by start_selenium()
 #' @param series_ids A character vector of Stats NZ series IDs
 #' @param target_directory The directory downloaded CSV files will be saved
+#' @param target_filename Name of downloaded CSV file. If NULL (the default), a generic name will be used.
 #' @param browser_dl_directory The directory where downloaded files by the browser are saved
 #'
 #' @return TRUE if data was successfully downloaded, otherwise FALSE
@@ -45,6 +46,7 @@ stop_selenium <- function(selenium_connection) {
 download_infoshare <- function(selenium_connection,
                                series_ids,
                                target_directory,
+                               target_filename = NULL,
                                browser_dl_directory = "~/Downloads") {
 
   if (length(series_ids) > 100) {
@@ -102,11 +104,18 @@ download_infoshare <- function(selenium_connection,
     file.copy(from = dl_file,
               to = target_directory)
     file.remove(dl_file)
-    file.rename(from = paste0(target_directory, "/ExportDirect.csv"),
-                to = paste0(target_directory,
-                            "/ExportDirect ",
-                            format(Sys.time(), "%Y-%m-%d %I%m%S"),
-                            ".csv"))
+    if (!is.null(target_filename)) {
+      file.rename(from = paste0(target_directory, "/ExportDirect.csv"),
+                  to = paste0(target_directory,
+                              "/",
+                              target_filename))
+    } else {
+      file.rename(from = paste0(target_directory, "/ExportDirect.csv"),
+                  to = paste0(target_directory,
+                              "/ExportDirect ",
+                              format(Sys.time(), "%Y-%m-%d %I%m%S"),
+                              ".csv"))
+    }
   }
 
   # Remove temporary .sch file

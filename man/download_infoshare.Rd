@@ -8,6 +8,7 @@ download_infoshare(
   selenium_connection,
   series_ids,
   target_directory,
+  target_filename = NULL,
   browser_dl_directory = "~/Downloads"
 )
 }
@@ -17,6 +18,8 @@ download_infoshare(
 \item{series_ids}{A character vector of Stats NZ series IDs}
 
 \item{target_directory}{The directory downloaded CSV files will be saved}
+
+\item{target_filename}{Name of downloaded CSV file. If NULL (the default), a generic name will be used.}
 
 \item{browser_dl_directory}{The directory where downloaded files by the browser are saved}
 }
